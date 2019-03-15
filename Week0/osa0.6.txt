@@ -1,0 +1,14 @@
+
+note over selain
+Selain lähettäää uuden tekstin palvelimelle.
+end note
+selain -> palvelin:POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over selain 
+Javascript lisaa selaimen
+muistilistalle annetun inputin
+end note
+
+palvelin -> selain: GET status code: 201 Created
+note over palvelin
+Palvelin vastaa onnistuneella 201 pyynnöllä.
+end note
