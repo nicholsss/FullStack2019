@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
@@ -7,17 +7,7 @@ import personService from "./services/contacts";
 import Notification from "./components/Notification";
 import "./index.css";
 
-/*
-const footerStyle = {
-  color: "red",
-  background: "lightgrey",
-  fontSize: "20px",
-  borderStyle: "solid",
-  borderRadius: "5px",
-  padding: "10px",
-  marginBottom:" 10px",
-};
-*/
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
@@ -53,9 +43,9 @@ const App = () => {
     console.log(event.target.value);
     const removeId = event.target.value;
 
-    const person = persons.find(person => person.id == removeId);
+    const person = persons.find(person => person.id === Number(removeId));
     if (window.confirm(`poistetaanko ${person.name}`)) {
-      let filtered = persons.filter(person => person.id != removeId);
+      let filtered = persons.filter(person => person.id !== Number(removeId));
       personService.remove(removeId).then(response => {
         setPersons(filtered);
       });
@@ -72,7 +62,7 @@ const App = () => {
           `${newName} on jo luettelossa, korvataanko vanha numero uudella`
         )
       ) {
-        const updated = persons.find(person => person.name == newName);
+        const updated = persons.find(person => person.name === newName);
 
         const personObject = {
           name: newName,
