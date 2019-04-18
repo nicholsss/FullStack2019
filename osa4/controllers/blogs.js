@@ -1,7 +1,14 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", {
+    name: 1,
+    username: 1,
+    id: 1
+  });
   response.json(blogs.map(blog => blog.toJSON()));
 });
 
@@ -15,8 +22,10 @@ blogsRouter.put("/:id", async (request, response, next) => {
     likes: body.likes
   };
   try {
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new:true});
-   
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+      new: true
+    });
+
     response.json(updatedBlog.toJSON());
   } catch (exception) {
     next(exception);
@@ -35,18 +44,30 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes === undefined ? 0 : body.likes
-  });
-  if (blog.title === undefined && blog.url === undefined) {
-    response.sendStatus(400);
-  }
+  //const token = getTokenFrom(request)
 
   try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const user = await User.findById(body.userId);
+
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes === undefined ? 0 : body.likes,
+      user: user._id
+    });
+    if (blog.title === undefined && blog.url === undefined) {
+      response.sendStatus(400);
+    }
+
     const savedBlog = await blog.save();
+    user.blog = user.blog.concat(savedBlog.id);
+    await user.save();
     response.json(savedBlog.toJSON());
   } catch (exception) {
     next(exception);
