@@ -6,15 +6,17 @@ import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import './style.css'
 import Togglable from './components/Togglable'
+import  { useField } from './hooks'
 
 const App = () => {
   //const blofFormref = React.createRef()
-
+  const username = useField('text')
+  const password = useField('password')
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  //const [username, setUsername] = useState('')
+  //const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -64,18 +66,24 @@ const App = () => {
 
   const handleLogin = async event => {
     event.preventDefault()
+    console.log(username.value)
+
     try {
+      //const u = username.value
+      //const p = password.value
       const user = await loginService.login({
-        username,
-        password
+        username:username.value, password:password.value
       })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
+      //setUsername('')
+      //setPassword('')
     } catch (exception) {
+
       setErrorMessage('Wrong username of passsword')
       setTimeout(() => {
         setErrorMessage(null)
@@ -136,20 +144,13 @@ const App = () => {
       <div>
         käyttäjätunnus
         <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          {...username.spread()}
         />
       </div>
       <div>
         salasana
         <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+          {...password.spread()} />
       </div>
       <button type="submit">kirjaudu</button>
     </form>
