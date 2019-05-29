@@ -1,15 +1,18 @@
 import React from "react";
+import { connect } from "react-redux";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { notificationChange } from "../reducers/NotificationReducer";
 const AnecdoteForm = props => {
   const addAnecdote = event => {
     event.preventDefault();
-    props.store.dispatch(createAnecdote(event.target.input.value));
-    props.store.dispatch(notificationChange(event.target.input.value));
+    props.createAnecdote(event.target.input.value);
+    props.notificationChange(event.target.input.value);
+    //props.store.dispatch(createAnecdote(event.target.input.value));
+    // props.store.dispatch(notificationChange(event.target.input.value));
     event.target.input.value = "";
 
     setTimeout(() => {
-      props.store.dispatch(notificationChange(null));
+      props.notificationChange(null);
     }, 5000);
   };
   return (
@@ -24,5 +27,18 @@ const AnecdoteForm = props => {
     </div>
   );
 };
+/*
+const mapStateToProps = (state) => {
+  // joskus on hyödyllistä tulostaa mapStateToProps:ista...
+  console.log("lol", state)
+  return {
 
-export default AnecdoteForm;
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+}
+*/
+export default connect(
+  null,
+  { createAnecdote, notificationChange }
+)(AnecdoteForm);
