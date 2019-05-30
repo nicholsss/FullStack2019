@@ -1,18 +1,16 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { vote } from "../reducers/anecdoteReducer";
-import { notificationChange } from "../reducers/NotificationReducer";
+import { notificationChange, setNotification } from "../reducers/NotificationReducer";
 
 const AnecdoteList = ( props ) => {
   const sortAnecdotes = props.visibleAnecdotes.sort((a, b) => {
     return b.votes - a.votes;
   });
   const Click = anecdote => {
-    props.dispatch(vote(anecdote.id));
-    props.dispatch(notificationChange(`u voted '${anecdote.content}'`));
-    setTimeout(() => {
-      props.dispatch(notificationChange(null));
-    }, 5000);
+    props.vote(anecdote);
+    props.setNotification(`you voted '${anecdote.content}'`, 10)
+   
   };
   return (
     <div>
@@ -30,7 +28,6 @@ const AnecdoteList = ( props ) => {
     </div>
   );
 };
-
 const anecdotesToShow = (anecdotes, filter) => {
  return filter ==="" 
  ? anecdotes 
@@ -38,14 +35,16 @@ const anecdotesToShow = (anecdotes, filter) => {
  
 }
 const mapStateToProps = (state) => {
-  // joskus on hyödyllistä tulostaa mapStateToProps:ista...
+
   return {
 
     
     visibleAnecdotes : anecdotesToShow(state.anecdotes, state.filter)
   }
 }
-//export default AnecdoteList;
-export default connect(mapStateToProps)(AnecdoteList)
+const mapDispatchToProps = {
+  setNotification,vote
+}
+export default connect(mapStateToProps,mapDispatchToProps)(AnecdoteList)
 
 

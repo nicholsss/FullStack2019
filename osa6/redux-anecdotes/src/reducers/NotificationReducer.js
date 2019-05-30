@@ -5,18 +5,24 @@ const notificationReducer = (state = defaultMessage, action) => {
     case "SET_NOTIFICATION":
       return action.content;
 
-    
-
     default:
       return state;
   }
 };
+export const setNotification = (content, time) => {
+  console.log("anecdote info", content, time);
+  return async dispatch => {
+    await dispatch({
+      type: "SET_NOTIFICATION",
+      content
+    });
 
-export const notificationChange = content => {
-  console.log("lol", content);
-  return {
-    type: "SET_NOTIFICATION",
-    content
+    setTimeout(() => {
+      dispatch({
+        type: "SET_NOTIFICATION",
+        content:null
+      });
+    }, time * 1000);
   };
 };
 
