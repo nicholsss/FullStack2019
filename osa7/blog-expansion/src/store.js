@@ -3,10 +3,10 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import notificationReducer from './reducers/NotificationReducer'
-
+import blogReducer from './reducers/blogReducer'
 
 const reducer = combineReducers({
-  
+  blogs: blogReducer,
   notification: notificationReducer,
   
 })

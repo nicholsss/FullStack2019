@@ -27,7 +27,7 @@ export const setNotification = (content, time) => {
         type: 'CLEAR_NOTIFICATION',
         
       })
-    }, time * 100)
+    }, time * 1000)
     
   }
 
