@@ -65,6 +65,7 @@ export const initializeBlogs = () => {
 export const likeBlog = blog => {
   console.log("click", blog.user.username)
   return async dispatch => {
+    console.log("click", blog.user.username)
     const liked = { ...blog, likes: blog.likes + 1 };
     const data = await blogService.update(liked);
     dispatch({

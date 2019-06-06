@@ -1,4 +1,3 @@
-const defaultMessage = 'hello world!'
 
 const reducer = (state = '', action) => {
   switch (action.type) {
