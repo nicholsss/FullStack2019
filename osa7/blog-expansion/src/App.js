@@ -40,7 +40,7 @@ const App = props => {
     }
   }, []);
 
-  const Menu = () => {
+  const Users = () => {
     return (
       <div>
 
@@ -89,25 +89,42 @@ const App = props => {
     )
   }
 
+  const Menu = () => {
+    const padding = {
+      paddingRight: 5,
+      color: "red",
+     
+    };
+    return (
+      <div style={padding}>
+        <Link style={padding} to="/">
+          blogs
+      </Link>
+        <Link style={padding}  to="users">users</Link>
+        {props.user.name} logged in
+        <button onClick={handleLogout}>logout</button>
+      </div>
+    )
+  }
 
 
-  const OneBlog =({blog})=> {
+
+  const OneBlog = ({ blog }) => {
     if (blog === undefined) {
       return null
     }
-    return(
-     //console.log('blogi tiedot', blog.url)
-    
-     <div>
-       {console.log("OKEY", blog.title)}
-       <h1>{blog.title} {blog.author}</h1> 
-       <a href ={blog.url}>{blog.url}</a>
-       <div>{blog.likes} likes
+    return (
+
+      <div>
+
+        <h1>{blog.title} {blog.author}</h1>
+        <a href={blog.url}>{blog.url}</a>
+        <div>{blog.likes} likes
        <button onClick={() => like(blog)}>like</button>
-       </div>
-       <div>added by {blog.user.name}</div>
-     </div>
-     
+        </div>
+        <div>added by {blog.user.name}</div>
+      </div>
+
     )
   }
 
@@ -161,7 +178,7 @@ const App = props => {
 
   const userById = id => props.users.find(u => u.id === id);
 
-  const blogById = id => props.blogs.find(b => b.id ===id)
+  const blogById = id => props.blogs.find(b => b.id === id)
 
   const byLikes = (b1, b2) => b2.likes - b1.likes;
 
@@ -202,12 +219,13 @@ const App = props => {
   return (
     <div>
       <Router>
-        <h2>blogs</h2>
+        <Menu />
+        <h2>Blog App</h2>
 
-        <p>{props.user.name} logged in</p>
-        <button onClick={handleLogout}>logout</button>
 
-        <Route exact path="/users" render={() => <Menu />} />
+
+
+        <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/" render={() => <Home />} />
         <Route exact path="/users/:id"
           render={({ match }) => (
@@ -215,10 +233,10 @@ const App = props => {
           )}
         />
         <Route exact path="/blogs/:id"
-        render={({match}) => (
-          <OneBlog blog ={blogById(match.params.id)} />
-          
-        )}
+          render={({ match }) => (
+            <OneBlog blog={blogById(match.params.id)} />
+
+          )}
         />
       </Router>
     </div>
