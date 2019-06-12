@@ -87,13 +87,30 @@ const App = props => {
         </ul>
       </div>
     )
-  }/*
-  const Blog =({blog})=> {
+  }
+
+
+
+  const OneBlog =({blog})=> {
+    if (blog === undefined) {
+      return null
+    }
     return(
-     <p>lol</p>
+     //console.log('blogi tiedot', blog.url)
+    
+     <div>
+       {console.log("OKEY", blog.title)}
+       <h1>{blog.title} {blog.author}</h1> 
+       <a href ={blog.url}>{blog.url}</a>
+       <div>{blog.likes} likes
+       <button onClick={() => like(blog)}>like</button>
+       </div>
+       <div>added by {blog.user.name}</div>
+     </div>
+     
     )
   }
-*/
+
   const notify = (message, color = "success") => {
     props.setNotification({ message, color }, 10);
   };
@@ -150,7 +167,7 @@ const App = props => {
 
   const like = blog => {
     console.log("like props", props);
-
+    console.log(blog.likes)
     props.likeBlog(blog);
     notify(`blog ${blog.title} by ${blog.author} liked!`);
   };
@@ -170,14 +187,14 @@ const App = props => {
         </Togglable>
 
         {props.blogs.sort(byLikes).map(blog => (
-          <Link><Blog
+          <Blog
             key={blog.id}
             blog={blog}
             like={like}
             remove={remove}
             user={props.user}
             creator={blog.user.username === props.user.username}
-          /></Link>
+          />
         ))}
       </div>
     );
@@ -199,7 +216,7 @@ const App = props => {
         />
         <Route exact path="/blogs/:id"
         render={({match}) => (
-          <Blog blog ={blogById(match.params.id)} />
+          <OneBlog blog ={blogById(match.params.id)} />
           
         )}
         />

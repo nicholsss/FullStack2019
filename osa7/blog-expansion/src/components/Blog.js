@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
 
 const Blog = ({ blog, like, remove, creator }) => {
   const [expanded, setExpanded] = useState(false)
@@ -27,11 +34,11 @@ const Blog = ({ blog, like, remove, creator }) => {
 
   return (
     <div style={blogStyle}>
-      <div onClick={() => setExpanded(!expanded)} className='name'>
-        {blog.title} {blog.author}
+      
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
       </div>
-      {expanded && details()}
-    </div>
+     
+    
   )}
 
 
