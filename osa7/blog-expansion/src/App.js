@@ -1,14 +1,20 @@
 import React, { useEffect } from "react";
 import Blog from "./components/Blog";
+import OneBlog from "./components/OneBlog";
 import blogService from "./services/blogs";
-
+import User from "./components/User";
 import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { setNotification } from "./reducers/NotificationReducer";
 import { useField } from "./hooks";
 import { connect } from "react-redux";
-import { initializeBlogs, likeBlog, removeBlog } from "./reducers/blogReducer";
+import {
+  initializeBlogs,
+  likeBlog,
+  removeBlog,
+  commentBlog
+} from "./reducers/blogReducer";
 import { loginUser, setUser, logout } from "./reducers/userReducer";
 import { initializeUsers } from "./reducers/usersReducer";
 import {
@@ -19,10 +25,11 @@ import {
   withRouter
 } from "react-router-dom";
 
+
 const App = props => {
   const [username, usernameReset] = useField("text");
   const [password, passwordReset] = useField("password");
-
+  //const [comment, commentReset] = useField("comment");
   useEffect(() => {
     props.initializeBlogs();
   }, []);
@@ -39,94 +46,112 @@ const App = props => {
       blogService.setToken(user.token);
     }
   }, []);
+/*
+  const OneBlog = ({ blog }) => {
+  
 
+    console.log("blogi", blog);
+    if (blog === undefined) {
+      return null;
+    }
+    const handleComment = () => {
+      console.log("comment value", comment.value);
+      commentBlog(blog.id, comment.value);
+      commentReset();
+    };
+  
+    return (
+      <div>
+        <h1>
+          {blog.title} {blog.author}
+        </h1>
+        <a href={blog.url}>{blog.url}</a>
+        <div>
+          {blog.likes} likes
+          <button onClick={() => like(blog)}>like</button>
+        </div>
+        <div>added by {blog.user.name}</div>
+  
+        <h1>Comments</h1>
+  
+        <input {...comment} />
+        <button onClick={handleComment}>create</button>
+  
+        <h1>{blog.text}</h1>
+        <ul>
+          {blog.comments.map(u => (
+            <li key={u.id}>{u.text}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+*/
   const Users = () => {
     return (
       <div>
-
         <h1>Users</h1>
+
         <table>
           <thead>
             <tr>
-              <th></th>
+              <th />
               <th>Blog created</th>
             </tr>
           </thead>
           <tbody>
-
             {props.users.map(user => (
-
               <tr key={user.id}>
-                <td ><Link to={`/users/${user.id}`}>{user.name}</Link></td>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
 
                 <td>{user.blogs.length}</td>
               </tr>
-
-
             ))}
           </tbody>
         </table>
       </div>
     );
   };
-
+/*
   const User = ({ user }) => {
     if (user === undefined) {
-      return null
+      return null;
     }
     return (
       <div>
         {console.log("useri", user.blog)}
         <h1>{user.name}</h1>
         <h1>added blogs</h1>
-        {console.log('tiedot', user)}
+        {console.log("tiedot", user)}
         <ul>
           {user.blogs.map(u => (
             <li key={u.id}>{u.title}</li>
           ))}
         </ul>
       </div>
-    )
-  }
-
+    );
+  };
+*/
   const Menu = () => {
     const padding = {
       paddingRight: 5,
-      color: "red",
-     
+      color: "red"
     };
     return (
       <div style={padding}>
         <Link style={padding} to="/">
           blogs
-      </Link>
-        <Link style={padding}  to="users">users</Link>
+        </Link>
+        <Link style={padding} to="users">
+          users
+        </Link>
         {props.user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </div>
-    )
-  }
-
-
-
-  const OneBlog = ({ blog }) => {
-    if (blog === undefined) {
-      return null
-    }
-    return (
-
-      <div>
-
-        <h1>{blog.title} {blog.author}</h1>
-        <a href={blog.url}>{blog.url}</a>
-        <div>{blog.likes} likes
-       <button onClick={() => like(blog)}>like</button>
-        </div>
-        <div>added by {blog.user.name}</div>
-      </div>
-
-    )
-  }
+    );
+  };
 
   const notify = (message, color = "success") => {
     props.setNotification({ message, color }, 10);
@@ -178,13 +203,13 @@ const App = props => {
 
   const userById = id => props.users.find(u => u.id === id);
 
-  const blogById = id => props.blogs.find(b => b.id === id)
+  const blogById = id => props.blogs.find(b => b.id === id);
 
   const byLikes = (b1, b2) => b2.likes - b1.likes;
 
   const like = blog => {
     console.log("like props", props);
-    console.log(blog.likes)
+    console.log(blog.likes);
     props.likeBlog(blog);
     notify(`blog ${blog.title} by ${blog.author} liked!`);
   };
@@ -196,8 +221,6 @@ const App = props => {
     return (
       <div>
         <Notification />
-
-
 
         <Togglable buttonLabel="create new" ref={newBlogRef}>
           <NewBlog />
@@ -222,27 +245,23 @@ const App = props => {
         <Menu />
         <h2>Blog App</h2>
 
-
-
-
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/" render={() => <Home />} />
-        <Route exact path="/users/:id"
-          render={({ match }) => (
-            <User user={userById(match.params.id)} />
-          )}
+        <Route
+          exact
+          path="/users/:id"
+          render={({ match }) => <User user={userById(match.params.id)} />}
         />
-        <Route exact path="/blogs/:id"
-          render={({ match }) => (
-            <OneBlog blog={blogById(match.params.id)} />
-
-          )}
-        />
+        <Route
+          exact
+          path="/blogs/:id"
+          render={({ match }) => <OneBlog blog={blogById(match.params.id)} />}
+        /> 
+        <Redirect to="/" />
       </Router>
     </div>
   );
 };
-
 
 const mapStateToProps = state => {
   return { blogs: state.blogs, user: state.user, users: state.users };
@@ -255,7 +274,8 @@ const mapDispatchToProps = {
   loginUser,
   logout,
   setUser,
-  initializeUsers
+  initializeUsers,
+  commentBlog
 };
 export default connect(
   mapStateToProps,

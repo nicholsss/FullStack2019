@@ -9,33 +9,37 @@ const reducer = (state = [], action) => {
       .sort(byLikes);
   } else if (action.type === "ADD") {
     return state.concat(action.data).sort(byLikes);
+  } else if (action.type === "COMMENT") {
+    const newBlog = { ...state.find(blog => blog.id === action.data.blog) };
+    console.log("texti", action.data.text);
+    console.log("action blogi", action.data.blog);
+    
+    newBlog.comments = newBlog.comments.concat({
+      text: action.data.text,
+      id: action.data.id
+    });
+    
+    console.log('newblog id', newBlog.id)
+    return [...state.filter(blog => blog.id !== newBlog.id), newBlog];
   } else if (action.type === "INITIALIZE") {
     return action.data.sort(byLikes);
-  }else if(action.type === "REMOVE"){
-    
-    return state.filter(
-
-      a => a.id !== action.data.id)
+  } else if (action.type === "REMOVE") {
+    return state.filter(a => a.id !== action.data.id);
   }
 
   return state;
 };
 
-
-export const removeBlog = (blog) => {
-  
+export const removeBlog = blog => {
   return async dispatch => {
+    await blogService.remove(blog);
 
-   
-    await blogService.remove(blog)
-   
     dispatch({
-      data : blog,
-      type:"REMOVE"
-    })
-      
-  }
-}
+      data: blog,
+      type: "REMOVE"
+    });
+  };
+};
 export const createBlog = (title, author, url) => {
   return async dispatch => {
     const blog = {
@@ -62,10 +66,21 @@ export const initializeBlogs = () => {
   };
 };
 
-export const likeBlog = blog => {
-  console.log("click", blog.user.username)
+export const commentBlog = (id, content) => {
+  const comment = { text: content };
   return async dispatch => {
-    console.log("click", blog.user.username)
+    const data = await blogService.commented(id, comment);
+    dispatch({
+      data,
+      type: "COMMENT"
+    });
+  };
+};
+
+export const likeBlog = blog => {
+  console.log("click", blog.user.username);
+  return async dispatch => {
+    console.log("click", blog.user.username);
     const liked = { ...blog, likes: blog.likes + 1 };
     const data = await blogService.update(liked);
     dispatch({
