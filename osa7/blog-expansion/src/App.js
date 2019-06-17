@@ -1,50 +1,49 @@
-import React, { useEffect } from "react";
-import Blog from "./components/Blog";
-import OneBlog from "./components/OneBlog";
-import blogService from "./services/blogs";
-import User from "./components/User";
-import NewBlog from "./components/NewBlog";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
-import { setNotification } from "./reducers/NotificationReducer";
-import { useField } from "./hooks";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react'
+import Blog from './components/Blog'
+import OneBlog from './components/OneBlog'
+import blogService from './services/blogs'
+import User from './components/User'
+import NewBlog from './components/NewBlog'
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import { setNotification } from './reducers/NotificationReducer'
+import { useField } from './hooks'
+import { connect } from 'react-redux'
 import {
   initializeBlogs,
   likeBlog,
   removeBlog,
   commentBlog
-} from "./reducers/blogReducer";
-import { loginUser, setUser, logout } from "./reducers/userReducer";
-import { initializeUsers } from "./reducers/usersReducer";
+} from './reducers/blogReducer'
+import { loginUser, setUser, logout } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Redirect,
-  withRouter
-} from "react-router-dom";
-import { Container, Menu, Form, Button } from "semantic-ui-react";
+} from 'react-router-dom'
+import { Container, Menu, Form, Button } from 'semantic-ui-react'
 
 const App = props => {
-  const [username, usernameReset] = useField("text");
-  const [password, passwordReset] = useField("password");
+  const [username, usernameReset] = useField('text')
+  const [password, passwordReset] = useField('password')
   useEffect(() => {
-    props.initializeBlogs();
-  }, []);
+    props.initializeBlogs()
+  }, [])
 
   useEffect(() => {
-    props.initializeUsers();
-  }, []);
+    props.initializeUsers()
+  }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      props.setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      props.setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   const Users = () => {
     return (
@@ -71,14 +70,14 @@ const App = props => {
           </tbody>
         </table>
       </div>
-    );
-  };
-  const notify = (message, color = "success") => {
-    props.setNotification({ message, color }, 10);
-  };
+    )
+  }
+  const notify = (message, color = 'success') => {
+    props.setNotification({ message, color }, 10)
+  }
 
   const handleLogin = async event => {
-    event.preventDefault();
+    event.preventDefault()
 
     props
       .loginUser({
@@ -87,43 +86,31 @@ const App = props => {
         notify
       })
       .catch(() => {
-        notify(`wrong username or password`, "error");
-      });
-    usernameReset();
-    passwordReset();
-  };
+        notify('wrong username or password', 'error')
+      })
+    usernameReset()
+    passwordReset()
+  }
 
   const handleLogout = () => {
-    props.logout();
-  };
+    props.logout()
+  }
 
-  const newBlogRef = React.createRef();
+  const newBlogRef = React.createRef()
 
-  const userById = id => props.users.find(u => u.id === id);
+  const userById = id => props.users.find(u => u.id === id)
 
-  const blogById = id => props.blogs.find(b => b.id === id);
+  const blogById = id => props.blogs.find(b => b.id === id)
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes;
-  /*
-  const like = blog => {
-    console.log("like props", props);
-    console.log(blog.likes);
-    props.likeBlog(blog);
-    notify(`blog ${blog.title} by ${blog.author} liked!`);
-  };
-  
-  const remove = blog => {
-    props.removeBlog(blog);
-    notify(`blog ${blog.title} by ${blog.author} removed!`);
-  };
-  */
+  const byLikes = (b1, b2) => b2.likes - b1.likes
+
   const Home = () => {
     return (
       <div>
         <Notification />
 
         <Togglable buttonLabel="create new" ref={newBlogRef}>
-         
+
           <NewBlog />
         </Togglable>
 
@@ -138,8 +125,8 @@ const App = props => {
           />
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   if (props.user === null) {
     return (
@@ -160,7 +147,7 @@ const App = props => {
           <Button type="submit">Submit</Button>
         </Form>
       </Container>
-    );
+    )
   }
   return (
     <Container>
@@ -173,8 +160,8 @@ const App = props => {
             <Link to="/users">users</Link>
           </Menu.Item>
           <Menu.Item>
-            {" "}
-            <em>{props.user.name} logged in</em>{" "}
+            {' '}
+            <em>{props.user.name} logged in</em>{' '}
           </Menu.Item>
 
           <Menu.Item>
@@ -198,12 +185,12 @@ const App = props => {
         <Redirect to="/" />
       </Router>
     </Container>
-  );
-};
+  )
+}
 
 const mapStateToProps = state => {
-  return { blogs: state.blogs, user: state.user, users: state.users };
-};
+  return { blogs: state.blogs, user: state.user, users: state.users }
+}
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
@@ -214,8 +201,8 @@ const mapDispatchToProps = {
   setUser,
   initializeUsers,
   commentBlog
-};
+}
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)

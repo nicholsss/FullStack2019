@@ -1,5 +1,4 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-//import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
 import notificationReducer from './reducers/NotificationReducer'
@@ -11,9 +10,9 @@ const reducer = combineReducers({
   notification: notificationReducer,
   user: userReducer,
   users: usersReducer
-  
+
 })
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(thunk))
 
 export default store
