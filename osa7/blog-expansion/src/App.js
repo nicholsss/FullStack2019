@@ -123,7 +123,7 @@ const App = props => {
         <Notification />
 
         <Togglable buttonLabel="create new" ref={newBlogRef}>
-          
+         
           <NewBlog />
         </Togglable>
 

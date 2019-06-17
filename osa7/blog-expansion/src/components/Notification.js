@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 const Notification = (props) => {
   console.log(props)
- console.log("notifi ok:",props.notification.ok )
+  console.log('notifi ok:',props.notification.ok )
   const style = {
-     color: props.notification.color === 'error' ? 'red' : 'green',
-    
+    color: props.notification.color === 'error' ? 'red' : 'green',
+
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -15,8 +15,8 @@ const Notification = (props) => {
   }
   if (props.notification.length === 0) {
     return null
-   }
-console.log('propsasdasd',props.notification)
+  }
+  console.log('propsasdasd',props.notification)
   return (
     <div style={style}>
       {props.notification.message}
@@ -24,7 +24,7 @@ console.log('propsasdasd',props.notification)
   )
 }
 const mapStateToProps = state => {
-  console.log("notif state:",state)
+  console.log('notif state:',state)
   return{
     notification : state.notification
   }
