@@ -16,7 +16,7 @@ const Notification = (props) => {
   if (props.notification.length === 0) {
     return null
    }
-
+console.log('propsasdasd',props.notification)
   return (
     <div style={style}>
       {props.notification.message}

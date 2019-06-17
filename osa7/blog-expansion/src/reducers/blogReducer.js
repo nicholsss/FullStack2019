@@ -1,6 +1,8 @@
 import blogService from "../services/blogs";
-
+import { setNotification } from "./NotificationReducer"
 const byLikes = (b1, b2) => b2.likes - b1.likes;
+
+
 
 const reducer = (state = [], action) => {
   if (action.type === "LIKE") {
@@ -78,9 +80,7 @@ export const commentBlog = (id, content) => {
 };
 
 export const likeBlog = blog => {
-  console.log("click", blog.user.username);
   return async dispatch => {
-    console.log("click", blog.user.username);
     const liked = { ...blog, likes: blog.likes + 1 };
     const data = await blogService.update(liked);
     dispatch({

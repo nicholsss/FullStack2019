@@ -24,12 +24,11 @@ import {
   Redirect,
   withRouter
 } from "react-router-dom";
-
+import { Container, Menu, Form, Button } from "semantic-ui-react";
 
 const App = props => {
   const [username, usernameReset] = useField("text");
   const [password, passwordReset] = useField("password");
-  //const [comment, commentReset] = useField("comment");
   useEffect(() => {
     props.initializeBlogs();
   }, []);
@@ -46,47 +45,7 @@ const App = props => {
       blogService.setToken(user.token);
     }
   }, []);
-/*
-  const OneBlog = ({ blog }) => {
-  
 
-    console.log("blogi", blog);
-    if (blog === undefined) {
-      return null;
-    }
-    const handleComment = () => {
-      console.log("comment value", comment.value);
-      commentBlog(blog.id, comment.value);
-      commentReset();
-    };
-  
-    return (
-      <div>
-        <h1>
-          {blog.title} {blog.author}
-        </h1>
-        <a href={blog.url}>{blog.url}</a>
-        <div>
-          {blog.likes} likes
-          <button onClick={() => like(blog)}>like</button>
-        </div>
-        <div>added by {blog.user.name}</div>
-  
-        <h1>Comments</h1>
-  
-        <input {...comment} />
-        <button onClick={handleComment}>create</button>
-  
-        <h1>{blog.text}</h1>
-        <ul>
-          {blog.comments.map(u => (
-            <li key={u.id}>{u.text}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-*/
   const Users = () => {
     return (
       <div>
@@ -96,7 +55,7 @@ const App = props => {
           <thead>
             <tr>
               <th />
-              <th>Blog created</th>
+              <th>Blogs created</th>
             </tr>
           </thead>
           <tbody>
@@ -114,45 +73,6 @@ const App = props => {
       </div>
     );
   };
-/*
-  const User = ({ user }) => {
-    if (user === undefined) {
-      return null;
-    }
-    return (
-      <div>
-        {console.log("useri", user.blog)}
-        <h1>{user.name}</h1>
-        <h1>added blogs</h1>
-        {console.log("tiedot", user)}
-        <ul>
-          {user.blogs.map(u => (
-            <li key={u.id}>{u.title}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-*/
-  const Menu = () => {
-    const padding = {
-      paddingRight: 5,
-      color: "red"
-    };
-    return (
-      <div style={padding}>
-        <Link style={padding} to="/">
-          blogs
-        </Link>
-        <Link style={padding} to="users">
-          users
-        </Link>
-        {props.user.name} logged in
-        <button onClick={handleLogout}>logout</button>
-      </div>
-    );
-  };
-
   const notify = (message, color = "success") => {
     props.setNotification({ message, color }, 10);
   };
@@ -177,28 +97,6 @@ const App = props => {
     props.logout();
   };
 
-  if (props.user === null) {
-    return (
-      <div>
-        <h2>log in to application</h2>
-
-        <Notification />
-
-        <form onSubmit={handleLogin}>
-          <div>
-            käyttäjätunnus
-            <input {...username} />
-          </div>
-          <div>
-            salasana
-            <input {...password} />
-          </div>
-          <button type="submit">kirjaudu</button>
-        </form>
-      </div>
-    );
-  }
-
   const newBlogRef = React.createRef();
 
   const userById = id => props.users.find(u => u.id === id);
@@ -206,23 +104,26 @@ const App = props => {
   const blogById = id => props.blogs.find(b => b.id === id);
 
   const byLikes = (b1, b2) => b2.likes - b1.likes;
-
+  /*
   const like = blog => {
     console.log("like props", props);
     console.log(blog.likes);
     props.likeBlog(blog);
     notify(`blog ${blog.title} by ${blog.author} liked!`);
   };
+  
   const remove = blog => {
     props.removeBlog(blog);
     notify(`blog ${blog.title} by ${blog.author} removed!`);
   };
+  */
   const Home = () => {
     return (
       <div>
         <Notification />
 
         <Togglable buttonLabel="create new" ref={newBlogRef}>
+          
           <NewBlog />
         </Togglable>
 
@@ -230,8 +131,8 @@ const App = props => {
           <Blog
             key={blog.id}
             blog={blog}
-            like={like}
-            remove={remove}
+            //like={like}
+            //remove={remove}
             user={props.user}
             creator={blog.user.username === props.user.username}
           />
@@ -239,12 +140,49 @@ const App = props => {
       </div>
     );
   };
-  return (
-    <div>
-      <Router>
-        <Menu />
-        <h2>Blog App</h2>
 
+  if (props.user === null) {
+    return (
+      <Container>
+        <h1>log in to application</h1>
+
+        <Notification />
+
+        <Form onSubmit={handleLogin}>
+          <Form.Field>
+            <label>First Name</label>
+            <input placeholder="First Name" {...username} />
+          </Form.Field>
+          <Form.Field>
+            <label>Last Name</label>
+            <input placeholder="Last Name" {...password} />
+          </Form.Field>
+          <Button type="submit">Submit</Button>
+        </Form>
+      </Container>
+    );
+  }
+  return (
+    <Container>
+      <Router>
+        <Menu>
+          <Menu.Item link to="/">
+            <Link to="/">Home</Link>
+          </Menu.Item>
+          <Menu.Item link to="users">
+            <Link to="/users">users</Link>
+          </Menu.Item>
+          <Menu.Item>
+            {" "}
+            <em>{props.user.name} logged in</em>{" "}
+          </Menu.Item>
+
+          <Menu.Item>
+            <button onClick={handleLogout}>logout</button>
+          </Menu.Item>
+        </Menu>
+
+        <h2>Blog App</h2>
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/" render={() => <Home />} />
         <Route
@@ -256,10 +194,10 @@ const App = props => {
           exact
           path="/blogs/:id"
           render={({ match }) => <OneBlog blog={blogById(match.params.id)} />}
-        /> 
+        />
         <Redirect to="/" />
       </Router>
-    </div>
+    </Container>
   );
 };
 
