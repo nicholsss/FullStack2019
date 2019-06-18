@@ -4,6 +4,7 @@ import OneBlog from './components/OneBlog'
 import blogService from './services/blogs'
 import User from './components/User'
 import NewBlog from './components/NewBlog'
+//import Users from './components/Users'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/NotificationReducer'
@@ -46,6 +47,7 @@ const App = props => {
   }, [])
 
   const Users = () => {
+    console.log('props.user',props.users)
     return (
       <div>
         <h1>Users</h1>
@@ -137,12 +139,12 @@ const App = props => {
 
         <Form onSubmit={handleLogin}>
           <Form.Field>
-            <label>First Name</label>
-            <input placeholder="First Name" {...username} />
+            <label>Username</label>
+            <input placeholder="Username" {...username} />
           </Form.Field>
           <Form.Field>
-            <label>Last Name</label>
-            <input placeholder="Last Name" {...password} />
+            <label>Password</label>
+            <input placeholder="Password" {...password} />
           </Form.Field>
           <Button type="submit">Submit</Button>
         </Form>
@@ -170,7 +172,7 @@ const App = props => {
         </Menu>
 
         <h2>Blog App</h2>
-        <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/users" render={() => <Users users={props.users}/>} />
         <Route exact path="/" render={() => <Home />} />
         <Route
           exact
