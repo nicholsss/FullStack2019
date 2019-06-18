@@ -1,4 +1,5 @@
-const _ = require("lodash");
+const _ = require('lodash')
+
 const dummy = blogs => {
   return 1;
 };
@@ -7,61 +8,64 @@ const totalLikes = blogs => {
   const reducer = (sum, blog) => {
     return sum + blog.likes;
   };
-  return blogs.lenght === 0 ? 0 : blogs.reduce(reducer, 0);
+  return blogs.length === 0 
+  ? 0 
+  : blogs.reduce(reducer, 0);
 };
 
-const favoriteBlog = blogs => {
-  let favorite = blogs[0];
-  const blo = () =>
+const favouriteBlog = blogs => {
+  let fave = blogs[0];
+  const faveBlog = blogs =>
     blogs.forEach(blog => {
-      if (favorite.likes < blog.likes) {
-        favorite = blog;
+      if (blog.likes > fave.likes) {
+        fave = blog;
       }
     });
-  blo();
-  return favorite;
+  faveBlog(blogs);
+  return blogs.length === 0 
+  ? 0 
+  : fave;
 };
 
 const mostBlogs = blogs => {
-  const count = {
+  const record = {
     author: "",
     blogs: 0
   };
   const most = () =>
     blogs.forEach(blog => {
-      let blogCount = _.filter(blogs, ["author", blog.author]).length;
-      if (blogCount > count.blogs) {
-        count.author = blog.author;
-        count.blogs = blogCount;
+      let blogCount = _.filter(blogs, ["author", blog.author]).length
+      if (blogCount > record.blogs) {
+        record.author = blog.author;
+        record.blogs = blogCount;
       }
     });
   most();
-  return count;
+  return record;
 };
 
 const mostLikes = blogs => {
-  const auth = {
+  const record = {
     author: "",
     likes: 0
-  };
-
-  const like = () => {
+  }
+  const most = () =>
     blogs.forEach(blog => {
-      const ok = totalLikes(_.filter(blogs, ["author", blog.author]));
-      if (ok > auth.likes) {
-        auth.author = blog.author;
-        auth.likes = ok;
+      let authorLikes = totalLikes(_.filter(blogs, ["author", blog.author]))
+      if (authorLikes > record.likes) {
+        record.author = blog.author;
+        record.likes = authorLikes
       }
     });
-  };
-  like();
-  return auth;
-};
+  most();
+  return record;
+
+}
 
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog,
+  favouriteBlog,
   mostBlogs,
   mostLikes
 };
