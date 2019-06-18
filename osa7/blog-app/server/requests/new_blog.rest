@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVjYjgxZGYyODkyNTg2MmViY2Y2ZDg2YSIsImlhdCI6MTU1NTU3MTUwOX0.NseFBSuRvAvUvD68Mr0uPX0hUyKEQbYU2GqAyowvHYw
+
+{
+    "title": "Toimiikos",
+  "author": "Juu",
+  "url": "Toimii",
+  "likes": 6,
+  "userId":"5ce79c712df60607547321d4",
+  "text": ""
+}

@@ -80,7 +80,6 @@ const App = props => {
 
   const handleLogin = async event => {
     event.preventDefault()
-
     props
       .loginUser({
         username: username.value,
@@ -134,7 +133,6 @@ const App = props => {
     return (
       <Container>
         <h1>log in to application</h1>
-
         <Notification />
 
         <Form onSubmit={handleLogin}>

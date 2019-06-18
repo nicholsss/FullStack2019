@@ -17,6 +17,7 @@ const Notification = (props) => {
     return null
   }
   console.log('propsasdasd',props.notification)
+
   return (
     <div style={style}>
       {props.notification.message}
