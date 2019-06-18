@@ -15,9 +15,6 @@ module.exports = {
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "globals":{
-        "BACKEND_URL": true
-    },
     "plugins": [
         "react", "jest"
     ],
