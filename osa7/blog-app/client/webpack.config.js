@@ -20,6 +20,9 @@ const config = (env, argv) => {
       contentBase: path.resolve(__dirname, 'build'),
       compress: true,
       port: 3000,
+      proxy:{
+        '/api': backend_url
+      }
     },
     devtool: 'source-map',
     module: {
