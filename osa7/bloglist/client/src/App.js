@@ -138,11 +138,11 @@ const App = props => {
         <Form onSubmit={handleLogin}>
           <Form.Field>
             <label>Username</label>
-            <input placeholder="Username" {...username} />
+            <input placeholder="Username" id="username" {...username} />
           </Form.Field>
           <Form.Field>
             <label>Password</label>
-            <input placeholder="Password" {...password} />
+            <input placeholder="Password" id="password" {...password} />
           </Form.Field>
           <Button type="submit">Submit</Button>
         </Form>

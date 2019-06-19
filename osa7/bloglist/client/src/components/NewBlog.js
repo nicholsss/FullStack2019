@@ -42,17 +42,17 @@ const NewBlog = props => {
 
       <Form.Field>
         <label>title</label>
-        <input placeholder='title'{...title} />
+        <input placeholder='title' id='title'{...title} />
       </Form.Field>
       <Form.Field>
         <label>author</label>
-        <input placeholder='author' {...author} />
+        <input placeholder='author' id='author' {...author} />
       </Form.Field>
       <Form.Field>
         <label>url</label>
-        <input placeholder='url'{...url} />
+        <input placeholder='url' id='url'{...url} />
       </Form.Field>
-      <Button primary type="submit">create</Button>
+      <Button primary type="submit" data-cy="create">create</Button>
     </Form>
 
   )
