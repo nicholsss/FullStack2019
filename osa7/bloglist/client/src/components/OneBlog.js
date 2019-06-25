@@ -17,7 +17,7 @@ const OneBlog = props => {
   return (
     <div>
       <h1>
-        <Notification/>
+       
         {props.blog.title} {props.blog.author}
       </h1>
       <a href={props.blog.url}>{props.blog.url}</a>

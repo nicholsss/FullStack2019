@@ -4,9 +4,11 @@ module.exports = {
         "es6": true,
         "jest/globals": true
     },
+    
     "extends": [ 
         "eslint:recommended",
         "plugin:react/recommended"
+        ,"prettier"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -40,6 +42,7 @@ module.exports = {
         "object-curly-spacing": [
             "error", "always"
         ],
+        
         "arrow-spacing": [
             "error", { "before": true, "after": true }
         ],
