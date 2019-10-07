@@ -15,11 +15,13 @@ describe('Bloglist ', function() {
   })
 
   describe('when logged in', function(){
+    
     beforeEach(function(){
       cy.contains('log in to application')
       cy.get('#username').type('testaaja')
       cy.get('#password').type('testaaja')
       cy.contains('Submit').click()
+      
     })
 
     it('show logged user name', function(){
@@ -32,8 +34,20 @@ describe('Bloglist ', function() {
       cy.get('#author').type('this is a test author')
       cy.get('#url').type('this is a test url')
       cy.get('[data-cy=create]').click()
-    })
+      cy.reload()
+      cy.contains('this is a test title this is a test author').click()
+      cy.contains('like').click()
 
+    
+     
+    })
+    /*
+    it('user can like blog',function(){
+     
+      cy.contains('this is a test title this is a test author').click()
+      cy.contains('like').click()
+    })
+*/
 
   })
 })
