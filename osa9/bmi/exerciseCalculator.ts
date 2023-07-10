@@ -8,7 +8,7 @@ interface Result {
     average: number
 
 }
-const calculateExercises = (dailyExercises: number[], target: number): Result => {
+const calculateExercises = (target: number, dailyExercises: number[]): Result => {
     let trainingDays = 0;
     dailyExercises.forEach((day) => {
         if (day > 0) {
@@ -47,5 +47,15 @@ const calculateExercises = (dailyExercises: number[], target: number): Result =>
     }
     return result;
 }
-
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+const target: number = Number(process.argv[2])
+const dailyExercises: number[] = process.argv.slice(3).map(Number)
+if(dailyExercises.length > 10) {
+    process.abort()
+}
+dailyExercises.map((day) => {
+    if (isNaN(day)){
+        process.abort()
+    }
+    
+})
+console.log(calculateExercises(target, dailyExercises))
