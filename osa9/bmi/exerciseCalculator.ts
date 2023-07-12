@@ -8,7 +8,7 @@ interface Result {
     average: number
 
 }
-const calculateExercises = (target: number, dailyExercises: number[]): Result => {
+export const calculateExercises = (target: number, dailyExercises: number[]): Result => {
     let trainingDays = 0;
     dailyExercises.forEach((day) => {
         if (day > 0) {
