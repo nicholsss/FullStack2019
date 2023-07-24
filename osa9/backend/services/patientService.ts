@@ -1,11 +1,11 @@
-import { Diagnose } from "../interfaces/Diagnose";
-import patientData from "../data/diagnoses";
+import { NoSSNPatientData } from "../interfaces/Patient";
+import patientData from "../data/patients";
 
-const getPatients = (): Array<Diagnose> => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return patientData;
-};
+const getSNNPatientInfo = (): NoSSNPatientData[] => {
+    // Create a new array without the 'ssn' property
+    return patientData.map(({ ssn:_ssn, ...rest }) => rest);
+  };
 
 export default {
-    getPatients
+    getSNNPatientInfo
 };
