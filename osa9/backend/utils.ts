@@ -1,23 +1,23 @@
 import { Gender, Patient } from "./interfaces/Patient";
 import { v1 as uuid } from 'uuid';
-const id = uuid();
+
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
-};
-
-const parseName = (name: unknown): string => {
-    if (!isString(name)) {
-        throw new Error('Incorrect or missing comment');
+  };
+  
+  const parseName = (name: unknown): string => {
+    if (!isString(name) || name.trim() === "") {
+      throw new Error('Incorrect or missing name');
     }
     return name;
-};
-
-const parseOccupation = (occupation: unknown): string => {
-    if (!isString(occupation)) {
-        throw new Error('Incorrect or missing comment');
+  };
+  
+  const parseOccupation = (occupation: unknown): string => {
+    if (!isString(occupation) || occupation.trim() === "") {
+      throw new Error('Incorrect or missing occupation');
     }
     return occupation;
-};
+  };
 const isGender = (param: string): param is Gender => {
     return Object.values(Gender).map(g => g.toString()).includes(param);
 };
@@ -31,16 +31,18 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 
-const AddNewPatient = (object: unknown): Patient => {
+const AddNewPatient = (object: Partial<Patient>): Patient => {
     if (!object || typeof object !== 'object') {
         throw new Error('Incorrect or missing data');
     }
     if ('name' in object && 'occupation' in object && 'gender' in object) {
         const newPatient: Patient = {
-            id: id,
+            id: uuid(),
             name: parseName(object.name),
             occupation: parseOccupation(object.occupation),
-            gender: parseGender(object.gender)
+            gender: parseGender(object.gender),
+            ssn: object.ssn,
+            dateOfBirth: object.dateOfBirth,
         };
 
         return newPatient;

@@ -2,6 +2,7 @@ import express from 'express';
 import patientService from '../services/patientService';
 import AddNewPatient from '../utils';
 import { v1 as uuid } from 'uuid';
+import { Patient } from '../interfaces/Patient';
 const id = uuid();
 
 console.log(id);
@@ -14,7 +15,7 @@ router.get('/', (_req, res) => {
 
 router.post('/', (req, res ) => {
   try {
-    const newPatient = AddNewPatient(req.body);
+    const newPatient = AddNewPatient(req.body as Patient);
     const addedPatient = patientService.addPatient(newPatient);
     res.json(addedPatient);
   } catch (error: unknown) {
@@ -22,7 +23,7 @@ router.post('/', (req, res ) => {
     if (error instanceof Error) {
       errorMessage += 'Error', error.message;
     }
-    res.status(400).send('fuked'+errorMessage);
+    res.status(400).send(errorMessage);
   }
 });
 

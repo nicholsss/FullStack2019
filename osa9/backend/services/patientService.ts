@@ -3,7 +3,7 @@ import patientData from "../data/patients";
 
 const patients: Patient[] = patientData;
 const getSNNPatientInfo = (): Patient[] => {
-    // Create a new array without the 'ssn' property
+  
     return patients.map(({ ssn:_ssn, ...rest }) => rest);
   };
 
