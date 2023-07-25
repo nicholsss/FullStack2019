@@ -1,4 +1,4 @@
-const patients = [
+const patientData = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -41,4 +41,4 @@ const patients = [
     }
 ];
 
-export default patients;
+export default patientData;
